@@ -95,10 +95,40 @@
             </div>
         </div>
 
+        <!-- Fourth Music Player -->
+        <div class="music-player" id="player4" style="display: none;">
+            <nav>
+                <div class="circle">
+                    <i class="fa-solid fa-angle-left"></i>
+                </div>
+                <div class="circle">
+                    <i class="fa-solid fa-bars"></i>
+                </div>
+            </nav>
+            <img src="imgs/thumbnail4.jpg" class="song-img">
+            <h1>Say Goodbye</h1>
+            <p>Unknown Brain Ft. Marvin Divine</p>
+
+            <audio id="song4">
+                <source src="audio/Unknown Brain - Say Goodbye (ft. Marvin Divine)  Electronic Pop  NCS - Copyright Free Music.mp3" type="audio/mpeg">
+            </audio>
+            <input type="range" value="0" id="progress4">
+
+            <div class="controls">
+                <div onclick="skipToPrevious()"><i class="fa-solid fa-backward"></i></div>
+                <div onclick="playPause('song4', 'ctrlIcon4', 'progress4')">
+                    <i class="fa-solid fa-play" id="ctrlIcon4"></i>
+                </div>
+                <div onclick="skipToNext()"><i class="fa-solid fa-forward"></i></div>
+            </div>
+        </div>
+
+        
+
     </div>
 
     <script>
-        let currentPlayer = 1; 
+        let currentPlayer = 1;
 
         function playPause(songId, ctrlIconId, progressId) {
             let song = document.getElementById(songId);
@@ -126,8 +156,11 @@
             } else if (currentPlayer === 2) {
                 resetSong('song2', 'ctrlIcon2', 'progress2'); 
                 skipToPlayer(3);
-            } else {
+            } else if (currentPlayer === 3) {
                 resetSong('song3', 'ctrlIcon3', 'progress3'); 
+                skipToPlayer(4); 
+            } else {
+                resetSong('song4', 'ctrlIcon4', 'progress4'); 
                 skipToPlayer(1);
             }
         }
@@ -139,9 +172,12 @@
             } else if (currentPlayer === 3) {
                 resetSong('song3', 'ctrlIcon3', 'progress3'); 
                 skipToPlayer(2);
+            } else if (currentPlayer === 4) { 
+                resetSong('song4', 'ctrlIcon4', 'progress4'); 
+                skipToPlayer(3);
             } else {
                 resetSong('song1', 'ctrlIcon1', 'progress1'); 
-                skipToPlayer(3);
+                skipToPlayer(4);
             }
         }
 
@@ -158,13 +194,15 @@
             let player1 = document.getElementById("player1");
             let player2 = document.getElementById("player2");
             let player3 = document.getElementById("player3");
+            let player4 = document.getElementById("player4"); 
             let song1 = document.getElementById("song1");
             let song2 = document.getElementById("song2");
             let song3 = document.getElementById("song3");
+            let song4 = document.getElementById("song4"); 
             let ctrlIcon1 = document.getElementById("ctrlIcon1");
             let ctrlIcon2 = document.getElementById("ctrlIcon2");
             let ctrlIcon3 = document.getElementById("ctrlIcon3");
-
+            let ctrlIcon4 = document.getElementById("ctrlIcon4"); 
             if (currentPlayer === 1) {
                 song1.pause();
                 player1.style.display = "none";
@@ -175,11 +213,16 @@
                 player2.style.display = "none";
                 ctrlIcon2.classList.remove("fa-pause");
                 ctrlIcon2.classList.add("fa-play");
-            } else {
+            } else if (currentPlayer === 3) {
                 song3.pause();
                 player3.style.display = "none";
                 ctrlIcon3.classList.remove("fa-pause");
                 ctrlIcon3.classList.add("fa-play");
+            } else { 
+                song4.pause();
+                player4.style.display = "none";
+                ctrlIcon4.classList.remove("fa-pause");
+                ctrlIcon4.classList.add("fa-play");
             }
 
             if (playerNumber === 1) {
@@ -188,24 +231,20 @@
             } else if (playerNumber === 2) {
                 player2.style.display = "block";
                 playPause('song2', 'ctrlIcon2', 'progress2');
-            } else {
+            } else if (playerNumber === 3) {
                 player3.style.display = "block";
                 playPause('song3', 'ctrlIcon3', 'progress3');
+            } else { 
+                player4.style.display = "block";
+                playPause('song4', 'ctrlIcon4', 'progress4');
             }
 
             currentPlayer = playerNumber;
         }
 
+        
         document.getElementById("song1").onloadedmetadata = function() {
             document.getElementById("progress1").max = this.duration;
-        };
-
-        document.getElementById("song2").onloadedmetadata = function() {
-            document.getElementById("progress2").max = this.duration;
-        };
-
-        document.getElementById("song3").onloadedmetadata = function() {
-            document.getElementById("progress3").max = this.duration;
         };
 
         document.getElementById("progress1").onchange = function() {
@@ -216,12 +255,20 @@
             document.getElementById("ctrlIcon1").classList.remove("fa-play");
         };
 
+        document.getElementById("song2").onloadedmetadata = function() {
+            document.getElementById("progress2").max = this.duration;
+        };
+
         document.getElementById("progress2").onchange = function() {
             let song2 = document.getElementById("song2");
             song2.currentTime = this.value;
             song2.play();
             document.getElementById("ctrlIcon2").classList.add("fa-pause");
             document.getElementById("ctrlIcon2").classList.remove("fa-play");
+        };
+
+        document.getElementById("song3").onloadedmetadata = function() {
+            document.getElementById("progress3").max = this.duration;
         };
 
         document.getElementById("progress3").onchange = function() {
@@ -232,10 +279,22 @@
             document.getElementById("ctrlIcon3").classList.remove("fa-play");
         };
 
-        // Add event listeners for when each song ends
+        document.getElementById("song4").onloadedmetadata = function() {
+            document.getElementById("progress4").max = this.duration;
+        };
+
+        document.getElementById("progress4").onchange = function() {
+            let song4 = document.getElementById("song4");
+            song4.currentTime = this.value;
+            song4.play();
+            document.getElementById("ctrlIcon4").classList.add("fa-pause");
+            document.getElementById("ctrlIcon4").classList.remove("fa-play");
+        };
+
         document.getElementById("song1").addEventListener("ended", skipToNext);
         document.getElementById("song2").addEventListener("ended", skipToNext);
         document.getElementById("song3").addEventListener("ended", skipToNext);
+        document.getElementById("song4").addEventListener("ended", skipToNext);
     </script>
 </body>
 </html>
