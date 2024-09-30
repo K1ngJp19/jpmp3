@@ -165,7 +165,6 @@
             let ctrlIcon2 = document.getElementById("ctrlIcon2");
             let ctrlIcon3 = document.getElementById("ctrlIcon3");
 
-            
             if (currentPlayer === 1) {
                 song1.pause();
                 player1.style.display = "none";
@@ -183,7 +182,6 @@
                 ctrlIcon3.classList.add("fa-play");
             }
 
-            
             if (playerNumber === 1) {
                 player1.style.display = "block";
                 playPause('song1', 'ctrlIcon1', 'progress1');
@@ -195,7 +193,6 @@
                 playPause('song3', 'ctrlIcon3', 'progress3');
             }
 
-            
             currentPlayer = playerNumber;
         }
 
@@ -234,6 +231,11 @@
             document.getElementById("ctrlIcon3").classList.add("fa-pause");
             document.getElementById("ctrlIcon3").classList.remove("fa-play");
         };
+
+        // Add event listeners for when each song ends
+        document.getElementById("song1").addEventListener("ended", skipToNext);
+        document.getElementById("song2").addEventListener("ended", skipToNext);
+        document.getElementById("song3").addEventListener("ended", skipToNext);
     </script>
 </body>
 </html>
