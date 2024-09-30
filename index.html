@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JP's MP3 Player</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://kit.fontawesome.com/c579e9d925.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="main-title">King JP MP3 Player</h1>
+
+        <!-- First Music Player -->
+        <div class="music-player" id="player1">
+            <nav>
+                <div class="circle">
+                    <i class="fa-solid fa-angle-left"></i>
+                </div>
+                <div class="circle">
+                    <i class="fa-solid fa-bars"></i>
+                </div>
+            </nav>
+            <img src="imgs/thumbnail.jpg" class="song-img">
+            <h1>Outside</h1>
+            <p>Calvin Harris Ft. Ellie Goulding</p>
+
+            <audio id="song1">
+                <source src="audio/Calvin Harris - Outside (Lyrics) ft. Ellie Goulding.mp3" type="audio/mpeg">
+            </audio>
+            <input type="range" value="0" id="progress1">
+
+            <div class="controls">
+                <div onclick="skipToPrevious()"><i class="fa-solid fa-backward"></i></div>
+                <div onclick="playPause('song1', 'ctrlIcon1', 'progress1')">
+                    <i class="fa-solid fa-play" id="ctrlIcon1"></i>
+                </div>
+                <div onclick="skipToNext()"><i class="fa-solid fa-forward"></i></div>
+            </div>
+        </div>
+
+        <!-- Second Music Player -->
+        <div class="music-player" id="player2" style="display: none;">
+            <nav>
+                <div class="circle">
+                    <i class="fa-solid fa-angle-left"></i>
+                </div>
+                <div class="circle">
+                    <i class="fa-solid fa-bars"></i>
+                </div>
+            </nav>
+            <img src="imgs/thumbnail2.png" class="song-img">
+            <h1>Judas</h1>
+            <p>Lady Gaga</p>
+
+            <audio id="song2">
+                <source src="audio/[Gojo vs. Sukuna] - Judas-Lady Gaga.mp3" type="audio/mpeg">
+            </audio>
+            <input type="range" value="0" id="progress2">
+
+            <div class="controls">
+                <div onclick="skipToPrevious()"><i class="fa-solid fa-backward"></i></div>
+                <div onclick="playPause('song2', 'ctrlIcon2', 'progress2')">
+                    <i class="fa-solid fa-play" id="ctrlIcon2"></i>
+                </div>
+                <div onclick="skipToNext()"><i class="fa-solid fa-forward"></i></div>
+            </div>
+        </div>
+
+        <!-- Third Music Player -->
+        <div class="music-player" id="player3" style="display: none;">
+            <nav>
+                <div class="circle">
+                    <i class="fa-solid fa-angle-left"></i>
+                </div>
+                <div class="circle">
+                    <i class="fa-solid fa-bars"></i>
+                </div>
+            </nav>
+            <img src="imgs/thumbnail3.jpg" class="song-img">
+            <h1>Bad Romance</h1>
+            <p>Lady Gaga</p>
+
+            <audio id="song3">
+                <source src="audio/Lady Gaga - Bad Romance (Lyrics).mp3" type="audio/mpeg">
+            </audio>
+            <input type="range" value="0" id="progress3">
+
+            <div class="controls">
+                <div onclick="skipToPrevious()"><i class="fa-solid fa-backward"></i></div>
+                <div onclick="playPause('song3', 'ctrlIcon3', 'progress3')">
+                    <i class="fa-solid fa-play" id="ctrlIcon3"></i>
+                </div>
+                <div onclick="skipToNext()"><i class="fa-solid fa-forward"></i></div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        let currentPlayer = 1; 
+
+        function playPause(songId, ctrlIconId, progressId) {
+            let song = document.getElementById(songId);
+            let ctrlIcon = document.getElementById(ctrlIconId);
+            let progress = document.getElementById(progressId);
+
+            if (ctrlIcon.classList.contains("fa-pause")) {
+                song.pause();
+                ctrlIcon.classList.remove("fa-pause");
+                ctrlIcon.classList.add("fa-play");
+            } else {
+                song.play();
+                ctrlIcon.classList.add("fa-pause");
+                ctrlIcon.classList.remove("fa-play");
+                setInterval(() => {
+                    progress.value = song.currentTime;
+                }, 500);
+            }
+        }
+
+        function skipToNext() {
+            if (currentPlayer === 1) {
+                resetSong('song1', 'ctrlIcon1', 'progress1'); 
+                skipToPlayer(2);
+            } else if (currentPlayer === 2) {
+                resetSong('song2', 'ctrlIcon2', 'progress2'); 
+                skipToPlayer(3);
+            } else {
+                resetSong('song3', 'ctrlIcon3', 'progress3'); 
+                skipToPlayer(1);
+            }
+        }
+
+        function skipToPrevious() {
+            if (currentPlayer === 2) {
+                resetSong('song2', 'ctrlIcon2', 'progress2'); 
+                skipToPlayer(1);
+            } else if (currentPlayer === 3) {
+                resetSong('song3', 'ctrlIcon3', 'progress3'); 
+                skipToPlayer(2);
+            } else {
+                resetSong('song1', 'ctrlIcon1', 'progress1'); 
+                skipToPlayer(3);
+            }
+        }
+
+        function resetSong(songId, ctrlIconId, progressId) {
+            let song = document.getElementById(songId);
+            song.currentTime = 0; 
+            song.pause(); 
+            document.getElementById(ctrlIconId).classList.remove("fa-pause");
+            document.getElementById(ctrlIconId).classList.add("fa-play");
+            document.getElementById(progressId).value = 0; 
+        }
+
+        function skipToPlayer(playerNumber) {
+            let player1 = document.getElementById("player1");
+            let player2 = document.getElementById("player2");
+            let player3 = document.getElementById("player3");
+            let song1 = document.getElementById("song1");
+            let song2 = document.getElementById("song2");
+            let song3 = document.getElementById("song3");
+            let ctrlIcon1 = document.getElementById("ctrlIcon1");
+            let ctrlIcon2 = document.getElementById("ctrlIcon2");
+            let ctrlIcon3 = document.getElementById("ctrlIcon3");
+
+            
+            if (currentPlayer === 1) {
+                song1.pause();
+                player1.style.display = "none";
+                ctrlIcon1.classList.remove("fa-pause");
+                ctrlIcon1.classList.add("fa-play");
+            } else if (currentPlayer === 2) {
+                song2.pause();
+                player2.style.display = "none";
+                ctrlIcon2.classList.remove("fa-pause");
+                ctrlIcon2.classList.add("fa-play");
+            } else {
+                song3.pause();
+                player3.style.display = "none";
+                ctrlIcon3.classList.remove("fa-pause");
+                ctrlIcon3.classList.add("fa-play");
+            }
+
+            
+            if (playerNumber === 1) {
+                player1.style.display = "block";
+                playPause('song1', 'ctrlIcon1', 'progress1');
+            } else if (playerNumber === 2) {
+                player2.style.display = "block";
+                playPause('song2', 'ctrlIcon2', 'progress2');
+            } else {
+                player3.style.display = "block";
+                playPause('song3', 'ctrlIcon3', 'progress3');
+            }
+
+            
+            currentPlayer = playerNumber;
+        }
+
+        document.getElementById("song1").onloadedmetadata = function() {
+            document.getElementById("progress1").max = this.duration;
+        };
+
+        document.getElementById("song2").onloadedmetadata = function() {
+            document.getElementById("progress2").max = this.duration;
+        };
+
+        document.getElementById("song3").onloadedmetadata = function() {
+            document.getElementById("progress3").max = this.duration;
+        };
+
+        document.getElementById("progress1").onchange = function() {
+            let song1 = document.getElementById("song1");
+            song1.currentTime = this.value;
+            song1.play();
+            document.getElementById("ctrlIcon1").classList.add("fa-pause");
+            document.getElementById("ctrlIcon1").classList.remove("fa-play");
+        };
+
+        document.getElementById("progress2").onchange = function() {
+            let song2 = document.getElementById("song2");
+            song2.currentTime = this.value;
+            song2.play();
+            document.getElementById("ctrlIcon2").classList.add("fa-pause");
+            document.getElementById("ctrlIcon2").classList.remove("fa-play");
+        };
+
+        document.getElementById("progress3").onchange = function() {
+            let song3 = document.getElementById("song3");
+            song3.currentTime = this.value;
+            song3.play();
+            document.getElementById("ctrlIcon3").classList.add("fa-pause");
+            document.getElementById("ctrlIcon3").classList.remove("fa-play");
+        };
+    </script>
+</body>
+</html>
